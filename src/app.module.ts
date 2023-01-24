@@ -10,6 +10,9 @@ import { UserRoles } from './roles/user-roles';
 import { AuthModule } from './auth/auth.module';
 import { BooksModule } from './books/books.module';
 import { Book } from './books/books.model';
+import { WinstonModule } from 'nest-winston';
+// eslint-disable-next-line prettier/prettier
+import {format, transports} from 'winston';
 
 @Module({
   controllers: [],
@@ -17,6 +20,18 @@ import { Book } from './books/books.model';
   imports: [
     ConfigModule.forRoot({
       envFilePath: `${process.env.NODE_ENV}.env`,
+    }),
+    WinstonModule.forRoot({
+      exitOnError: false,
+      format: format.combine(
+        format.colorize(),
+        format.timestamp(),
+        format.simple(),
+      ),
+      transports: [
+        new transports.Console({ level: 'debug' }),
+        new transports.File({ filename: 'debug.log', level: 'debug' }),
+      ],
     }),
     SequelizeModule.forRoot({
       dialect: 'postgres',

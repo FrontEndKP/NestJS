@@ -20,6 +20,7 @@ import { Model } from 'sequelize-typescript';
 import { AuthGuard } from '../auth/auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles-auth.decorator';
+import { ChangePasswordDto } from './dto/change-password dto';
 
 @ApiTags('Користувачі')
 @Controller('users')
@@ -74,7 +75,7 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Зміна паролю користувача адміном' })
   @ApiResponse({ status: 200 })
-  @Put('/ps/:id/:password')
+  @Put('/psa/:id/:password')
   @Roles('ADMIN')
   @UseGuards(RolesGuard)
   async update(
@@ -84,14 +85,5 @@ export class UsersController {
     @Request() req,
   ) {
     return this.userService.updatePasswordById(id, password);
-  }
-
-  @ApiOperation({ summary: 'Видача ролі' })
-  @Roles('ADMIN')
-  @UseGuards(RolesGuard)
-  @ApiResponse({ status: 200 })
-  @Post('/role')
-  addRole(@Body() dto: AddRoleDto) {
-    return this.userService.addRole(dto);
   }
 }

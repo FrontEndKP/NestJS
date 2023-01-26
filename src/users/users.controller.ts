@@ -5,7 +5,7 @@ import {
   Get,
   Param,
   Post,
-  Put,
+  Put, RawBodyRequest, Req,
   Request,
   UseGuards,
   UsePipes,
@@ -33,7 +33,8 @@ export class UsersController {
   @Roles('ADMIN')
   @UseGuards(RolesGuard)
   @Post()
-  create(@Body() userDto: CreateUserDto) {
+  create(@Body() userDto: CreateUserDto, @Req() req: RawBodyRequest<Request>) {
+    const raw = req.rawBody;
     return this.userService.createUser(userDto);
   }
 

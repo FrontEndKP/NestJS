@@ -1,4 +1,4 @@
-import { CreateBookDto } from './dto/create-Book.dto';
+import { CreateBookDto } from './dto/create-book.dto';
 import { Book } from './books.model';
 import { Logger } from 'winston';
 export declare class BooksService {

@@ -19,7 +19,7 @@ import {format, transports} from 'winston';
   providers: [],
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '.env',
+      envFilePath: `${process.env.NODE_ENV}.env`,
     }),
     WinstonModule.forRoot({
       exitOnError: false,

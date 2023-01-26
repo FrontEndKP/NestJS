@@ -29,7 +29,7 @@ AppModule = __decorate([
         providers: [],
         imports: [
             config_1.ConfigModule.forRoot({
-                envFilePath: `${process.env.NODE_ENV}.env`,
+                envFilePath: '.env',
             }),
             nest_winston_1.WinstonModule.forRoot({
                 exitOnError: false,

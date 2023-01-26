@@ -4,7 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function start() {
   const PORT = process.env.PORT || 3000;
-  const app = await NestFactory.create(AppModule, { rawBody: true });
+  const app = await NestFactory.create(AppModule, { bodyParser: false });
 
   const config = new DocumentBuilder()
     .setTitle(

@@ -57,6 +57,7 @@ export class UsersService {
       throw new HttpException('Користувачів не знайдено', HttpStatus.NOT_FOUND);
     } catch (e) {
       this.logger.error(e.stack);
+      return e.message;
     }
   }
 
@@ -73,6 +74,7 @@ export class UsersService {
       throw new HttpException('Користувача не знайдено', HttpStatus.NOT_FOUND);
     } catch (e) {
       this.logger.error(e.stack);
+      return e.message;
     }
   }
 
@@ -92,6 +94,7 @@ export class UsersService {
       );
     } catch (e) {
       this.logger.error(e.stack);
+      return e.message;
     }
   }
 
@@ -110,7 +113,7 @@ export class UsersService {
       );
     } catch (e) {
       this.logger.error(e.stack);
-      return { message: e.message };
+      return  e.message;
     }
   }
 
@@ -126,6 +129,7 @@ export class UsersService {
       this.logger.info(`Successfully deleted user`);
     } catch (e) {
       this.logger.error(e.stack);
+      return e.message;
     }
   }
 
@@ -146,6 +150,7 @@ export class UsersService {
       );
     } catch (e) {
       this.logger.error(e.stack);
+      return e.message;
     }
   }
 

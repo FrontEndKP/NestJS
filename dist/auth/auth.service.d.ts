@@ -1,7 +1,6 @@
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../users/users.model';
 import { Logger } from 'winston';
 export declare class AuthService {
     private userService;
@@ -11,5 +10,5 @@ export declare class AuthService {
     login(userDto: CreateUserDto): Promise<any>;
     registration(userDto: CreateUserDto): Promise<any>;
     private generateToken;
-    validateUser(email: string, password: string): Promise<User>;
+    validateUser(email: string, password: string): Promise<any>;
 }

@@ -12,15 +12,11 @@ export declare class UsersService {
     private authService;
     constructor(userRepository: typeof User, roleService: RolesService, logger: Logger, authService: AuthService);
     createUser(dto: CreateUserDto): Promise<User>;
-    findAllUsers(): Promise<User[]>;
-    findUserByEmail(email: string): Promise<User>;
-    findUserById(id: number): Promise<User>;
-    addRole(dto: AddRoleDto): Promise<AddRoleDto | {
-        message: any;
-    }>;
-    delete(id: number): Promise<void>;
-    updatePasswordById(id: number, password: string): Promise<{
-        updatedUser: number;
-    }>;
+    findAllUsers(): Promise<any>;
+    findUserByEmail(email: string): Promise<any>;
+    findUserById(id: number): Promise<any>;
+    addRole(dto: AddRoleDto): Promise<any>;
+    delete(id: number): Promise<any>;
+    updatePasswordById(id: number, password: string): Promise<any>;
     updatePasswordByEmail(dto: ChangePasswordDto): Promise<any>;
 }

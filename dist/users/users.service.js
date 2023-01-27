@@ -57,6 +57,7 @@ let UsersService = class UsersService {
         }
         catch (e) {
             this.logger.error(e.stack);
+            return e.message;
         }
     }
     async findUserByEmail(email) {
@@ -73,6 +74,7 @@ let UsersService = class UsersService {
         }
         catch (e) {
             this.logger.error(e.stack);
+            return e.message;
         }
     }
     async findUserById(id) {
@@ -89,6 +91,7 @@ let UsersService = class UsersService {
         }
         catch (e) {
             this.logger.error(e.stack);
+            return e.message;
         }
     }
     async addRole(dto) {
@@ -104,7 +107,7 @@ let UsersService = class UsersService {
         }
         catch (e) {
             this.logger.error(e.stack);
-            return { message: e.message };
+            return e.message;
         }
     }
     async delete(id) {
@@ -117,6 +120,7 @@ let UsersService = class UsersService {
         }
         catch (e) {
             this.logger.error(e.stack);
+            return e.message;
         }
     }
     async updatePasswordById(id, password) {
@@ -131,6 +135,7 @@ let UsersService = class UsersService {
         }
         catch (e) {
             this.logger.error(e.stack);
+            return e.message;
         }
     }
     async updatePasswordByEmail(dto) {

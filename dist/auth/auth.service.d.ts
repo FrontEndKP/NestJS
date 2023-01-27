@@ -9,9 +9,7 @@ export declare class AuthService {
     private readonly logger;
     constructor(userService: UsersService, jwtService: JwtService, logger: Logger);
     login(userDto: CreateUserDto): Promise<any>;
-    registration(userDto: CreateUserDto): Promise<{
-        token: string;
-    }>;
+    registration(userDto: CreateUserDto): Promise<any>;
     private generateToken;
     validateUser(email: string, password: string): Promise<User>;
 }

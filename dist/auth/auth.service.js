@@ -47,6 +47,7 @@ let AuthService = class AuthService {
         }
         catch (e) {
             this.logger.error(e.stack);
+            return e.message;
         }
     }
     async generateToken(user) {

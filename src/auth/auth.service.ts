@@ -50,6 +50,7 @@ export class AuthService {
       return this.generateToken(user);
     } catch (e) {
       this.logger.error(e.stack);
+      return e.message;
     }
   }
 

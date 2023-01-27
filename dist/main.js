@@ -5,7 +5,7 @@ const app_module_1 = require("./app.module");
 const swagger_1 = require("@nestjs/swagger");
 async function start() {
     const PORT = process.env.PORT || 3000;
-    const app = await core_1.NestFactory.create(app_module_1.AppModule, { rawBody: true });
+    const app = await core_1.NestFactory.create(app_module_1.AppModule, { bodyParser: false });
     const config = new swagger_1.DocumentBuilder()
         .setTitle('Проект з предмету Сучасні технології програмного забезпечення (NodeJS)')
         .setDescription('Опис')

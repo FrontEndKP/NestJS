@@ -18,14 +18,14 @@ const create_user_dto_1 = require("./dto/create-user.dto");
 const users_service_1 = require("./users.service");
 const swagger_1 = require("@nestjs/swagger");
 const users_model_1 = require("./users.model");
+const add_role_dto_1 = require("./dto/add-role.dto");
 const roles_guard_1 = require("../auth/roles.guard");
 const roles_auth_decorator_1 = require("../auth/roles-auth.decorator");
 let UsersController = class UsersController {
     constructor(userService) {
         this.userService = userService;
     }
-    create(userDto, req) {
-        const raw = req.rawBody;
+    create(userDto) {
         return this.userService.createUser(userDto);
     }
     getAll() {
@@ -43,6 +43,9 @@ let UsersController = class UsersController {
     async update(id, password, userDto, req) {
         return this.userService.updatePasswordById(id, password);
     }
+    addRole(dto) {
+        return this.userService.addRole(dto);
+    }
 };
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Створення користувача' }),
@@ -52,9 +55,8 @@ __decorate([
     (0, common_1.UseGuards)(roles_guard_1.RolesGuard),
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto, Object]),
+    __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
     __metadata("design:returntype", void 0)
 ], UsersController.prototype, "create", null);
 __decorate([
@@ -114,6 +116,15 @@ __decorate([
     __metadata("design:paramtypes", [Number, String, create_user_dto_1.CreateUserDto, Object]),
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "update", null);
+__decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Назначити роль' }),
+    (0, swagger_1.ApiResponse)({ status: 200 }),
+    (0, common_1.Post)('/role'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [add_role_dto_1.AddRoleDto]),
+    __metadata("design:returntype", void 0)
+], UsersController.prototype, "addRole", null);
 UsersController = __decorate([
     (0, swagger_1.ApiTags)('Користувачі'),
     (0, common_1.Controller)('users'),

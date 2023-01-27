@@ -86,4 +86,11 @@ export class UsersController {
   ) {
     return this.userService.updatePasswordById(id, password);
   }
+  
+  @ApiOperation({summary: 'Назначити роль'})
+  @ApiResponse({status: 200})
+  @Post('/role')
+    addRole(@Body() dto: AddRoleDto) {
+        return this.usersService.addRole(dto);
+    }
 }

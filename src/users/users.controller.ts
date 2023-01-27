@@ -90,7 +90,7 @@ export class UsersController {
   @ApiOperation({summary: 'Назначити роль'})
   @ApiResponse({status: 200})
   @Post('/role')
-    addRole(@Body() dto: AddRoleDto) {
+  async addRole(@Body() dto: AddRoleDto) {
         return this.userService.addRole(dto);
     }
 }

@@ -30,8 +30,6 @@ export class UsersController {
   @ApiOperation({ summary: 'Створення користувача' })
   @ApiResponse({ status: 200, type: User })
   @UsePipes(ValidationPipe)
-  @Roles('ADMIN')
-  @UseGuards(RolesGuard)
   @Post()
   create(@Body() userDto: CreateUserDto) {
     return this.userService.createUser(userDto);
@@ -39,8 +37,6 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Отримання усіх користувачів' })
   @ApiResponse({ status: 200, type: [User] })
-  @Roles('ADMIN')
-  @UseGuards(RolesGuard)
   @Get()
   getAll() {
     return this.userService.findAllUsers();
@@ -48,8 +44,6 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Отримання користувача за email' })
   @ApiResponse({ status: 200, type: User })
-  @Get('/m/:email')
-  @Roles('ADMIN')
   @UseGuards(RolesGuard)
   getByValue(@Param('email') value: string) {
     return this.userService.findUserByEmail(value);
@@ -58,8 +52,6 @@ export class UsersController {
   @ApiOperation({ summary: 'Отримання користувача за id' })
   @ApiResponse({ status: 200, type: User })
   @Get('/i/:id')
-  @Roles('ADMIN')
-  @UseGuards(RolesGuard)
   getById(@Param('id') id: number) {
     return this.userService.findUserById(id);
   }

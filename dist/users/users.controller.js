@@ -21,6 +21,7 @@ const users_model_1 = require("./users.model");
 const add_role_dto_1 = require("./dto/add-role.dto");
 const roles_guard_1 = require("../auth/roles.guard");
 const roles_auth_decorator_1 = require("../auth/roles-auth.decorator");
+const change_password_dto_1 = require("./dto/change-password dto");
 let UsersController = class UsersController {
     constructor(userService) {
         this.userService = userService;
@@ -40,8 +41,11 @@ let UsersController = class UsersController {
     async removeById(id) {
         return this.userService.delete(id);
     }
-    async update(id, password, userDto, req) {
+    async updateById(id, password, userDto, req) {
         return this.userService.updatePasswordById(id, password);
+    }
+    async updateByEmail(dto, req) {
+        return this.userService.updatePasswordByEmail(dto);
     }
     setRole(userDto) {
         return this.userService.addRole(userDto);
@@ -115,7 +119,17 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, String, create_user_dto_1.CreateUserDto, Object]),
     __metadata("design:returntype", Promise)
-], UsersController.prototype, "update", null);
+], UsersController.prototype, "updateById", null);
+__decorate([
+    (0, swagger_1.ApiOperation)({ summary: 'Зміна паролю користувачем' }),
+    (0, swagger_1.ApiResponse)({ status: 200 }),
+    (0, common_1.Put)('/ps'),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [change_password_dto_1.ChangePasswordDto, Object]),
+    __metadata("design:returntype", Promise)
+], UsersController.prototype, "updateByEmail", null);
 __decorate([
     (0, swagger_1.ApiOperation)({ summary: 'Видача ролі' }),
     (0, swagger_1.ApiResponse)({ status: 200, type: users_model_1.User }),

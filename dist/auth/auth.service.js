@@ -27,7 +27,7 @@ let AuthService = class AuthService {
     }
     async login(userDto) {
         try {
-            const user = await this.validateUser(userDto);
+            const user = await this.validateUser(userDto.email, userDto.password);
             return this.generateToken(user);
         }
         catch (e) {
@@ -60,9 +60,9 @@ let AuthService = class AuthService {
             this.logger.error(e.stack);
         }
     }
-    async validateUser(userDto) {
-        const user = await this.userService.findUserByEmail(userDto.email);
-        const passwordEquals = await bcrypt.compare(userDto.password, user.password);
+    async validateUser(email, password) {
+        const user = await this.userService.findUserByEmail(email);
+        const passwordEquals = await bcrypt.compare(password, user.password);
         if (user && passwordEquals) {
             return user;
         }
@@ -73,6 +73,7 @@ let AuthService = class AuthService {
 };
 AuthService = __decorate([
     (0, common_1.Injectable)(),
+    __param(0, (0, common_1.Inject)((0, common_1.forwardRef)(() => users_service_1.UsersService))),
     __param(2, (0, common_1.Inject)(nest_winston_1.WINSTON_MODULE_PROVIDER)),
     __metadata("design:paramtypes", [users_service_1.UsersService,
         jwt_1.JwtService,

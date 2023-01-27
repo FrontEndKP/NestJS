@@ -78,13 +78,20 @@ export class UsersController {
   @Put('/psa/:id/:password')
   @Roles('ADMIN')
   @UseGuards(RolesGuard)
-  async update(
+  async updateById(
     @Param('id') id: number,
     @Param('password') password: string,
     @Body() userDto: CreateUserDto,
     @Request() req,
   ) {
     return this.userService.updatePasswordById(id, password);
+  }
+
+  @ApiOperation({ summary: 'Зміна паролю користувачем' })
+  @ApiResponse({ status: 200 })
+  @Put('/ps')
+  async updateByEmail(@Body() dto: ChangePasswordDto, @Request() req) {
+    return this.userService.updatePasswordByEmail(dto);
   }
 
   @ApiOperation({ summary: 'Видача ролі' })

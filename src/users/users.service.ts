@@ -1,4 +1,10 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './users.model';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -16,6 +22,9 @@ export class UsersService {
     @InjectModel(User) private userRepository: typeof User,
     private roleService: RolesService,
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+
+    @Inject(forwardRef(() => AuthService))
+    private authService: AuthService,
   ) {}
   async createUser(dto: CreateUserDto) {
     try {
@@ -137,6 +146,33 @@ export class UsersService {
       );
     } catch (e) {
       this.logger.error(e.stack);
+    }
+  }
+
+  async updatePasswordByEmail(dto: ChangePasswordDto) {
+    try {
+      const user = await this.authService.validateUser(
+        dto.email,
+        dto.oldPassword,
+      );
+      if (!user) {
+        throw new HttpException(
+          'Невірний email або пароль',
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
+      const hashPassword = await bcrypt.hash(dto.newPassword, 5);
+      const [updatedUser] = await this.userRepository.update(
+        { password: hashPassword },
+        { where: { email: dto.email }, returning: true },
+      );
+      if (updatedUser) {
+        this.logger.info(`Successfully updated password`);
+        return 'Успішно змінено пароль';
+      }
+    } catch (e) {
+      this.logger.error(e.stack);
+      return e.message;
     }
   }
 }

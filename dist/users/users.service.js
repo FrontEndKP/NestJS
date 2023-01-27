@@ -17,14 +17,16 @@ const common_1 = require("@nestjs/common");
 const sequelize_1 = require("@nestjs/sequelize");
 const users_model_1 = require("./users.model");
 const roles_service_1 = require("../roles/roles.service");
+const auth_service_1 = require("../auth/auth.service");
 const bcrypt = require("bcryptjs");
 const winston_1 = require("winston");
 const nest_winston_1 = require("nest-winston");
 let UsersService = class UsersService {
-    constructor(userRepository, roleService, logger) {
+    constructor(userRepository, roleService, logger, authService) {
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.logger = logger;
+        this.authService = authService;
     }
     async createUser(dto) {
         try {
@@ -131,13 +133,33 @@ let UsersService = class UsersService {
             this.logger.error(e.stack);
         }
     }
+    async updatePasswordByEmail(dto) {
+        try {
+            const user = await this.authService.validateUser(dto.email, dto.oldPassword);
+            if (!user) {
+                throw new common_1.HttpException('Невірний email або пароль', common_1.HttpStatus.UNAUTHORIZED);
+            }
+            const hashPassword = await bcrypt.hash(dto.newPassword, 5);
+            const [updatedUser] = await this.userRepository.update({ password: hashPassword }, { where: { email: dto.email }, returning: true });
+            if (updatedUser) {
+                this.logger.info(`Successfully updated password`);
+                return 'Успішно змінено пароль';
+            }
+        }
+        catch (e) {
+            this.logger.error(e.stack);
+            return e.message;
+        }
+    }
 };
 UsersService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, sequelize_1.InjectModel)(users_model_1.User)),
     __param(2, (0, common_1.Inject)(nest_winston_1.WINSTON_MODULE_PROVIDER)),
+    __param(3, (0, common_1.Inject)((0, common_1.forwardRef)(() => auth_service_1.AuthService))),
     __metadata("design:paramtypes", [Object, roles_service_1.RolesService,
-        winston_1.Logger])
+        winston_1.Logger,
+        auth_service_1.AuthService])
 ], UsersService);
 exports.UsersService = UsersService;
 //# sourceMappingURL=users.service.js.map

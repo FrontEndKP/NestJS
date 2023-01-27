@@ -1,4 +1,5 @@
 import {
+  forwardRef,
   HttpException,
   HttpStatus,
   Inject,
@@ -16,6 +17,7 @@ import { Logger } from 'winston';
 @Injectable()
 export class AuthService {
   constructor(
+    @Inject(forwardRef(() => UsersService))
     private userService: UsersService,
     private jwtService: JwtService,
     @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
@@ -23,7 +25,7 @@ export class AuthService {
 
   async login(userDto: CreateUserDto) {
     try {
-      const user = await this.validateUser(userDto);
+      const user = await this.validateUser(userDto.email, userDto.password);
       return this.generateToken(user);
     } catch (e) {
       this.logger.error(e.stack);
@@ -62,13 +64,10 @@ export class AuthService {
     }
   }
 
-  private async validateUser(userDto: CreateUserDto) {
+  async validateUser(email: string, password: string) {
     //try {
-    const user = await this.userService.findUserByEmail(userDto.email);
-    const passwordEquals = await bcrypt.compare(
-      userDto.password,
-      user.password,
-    );
+    const user = await this.userService.findUserByEmail(email);
+    const passwordEquals = await bcrypt.compare(password, user.password);
     if (user && passwordEquals) {
       return user;
     }

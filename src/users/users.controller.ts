@@ -86,4 +86,12 @@ export class UsersController {
   ) {
     return this.userService.updatePasswordById(id, password);
   }
+
+  @ApiOperation({ summary: 'Видача ролі' })
+  @ApiResponse({ status: 200, type: User })
+  @UsePipes(ValidationPipe)
+  @Put('/role')
+  setRole(@Body() userDto: AddRoleDto) {
+    return this.userService.addRole(userDto);
+  }
 }

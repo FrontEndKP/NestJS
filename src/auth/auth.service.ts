@@ -27,6 +27,7 @@ export class AuthService {
       return this.generateToken(user);
     } catch (e) {
       this.logger.error(e.stack);
+      return e.message;
     }
   }
 
@@ -62,20 +63,20 @@ export class AuthService {
   }
 
   private async validateUser(userDto: CreateUserDto) {
-    try {
-      const user = await this.userService.findUserByEmail(userDto.email);
-      const passwordEquals = await bcrypt.compare(
-        userDto.password,
-        user.password,
-      );
-      if (user && passwordEquals) {
-        return user;
-      }
-      throw new UnauthorizedException({
-        message: 'Не вірний email або пароль',
-      });
-    } catch (e) {
-      this.logger.error(e.stack);
+    //try {
+    const user = await this.userService.findUserByEmail(userDto.email);
+    const passwordEquals = await bcrypt.compare(
+      userDto.password,
+      user.password,
+    );
+    if (user && passwordEquals) {
+      return user;
     }
+    throw new UnauthorizedException({
+      message: 'Не вірний email або пароль',
+    });
+    //} catch (e) {
+    //this.logger.error(e.stack);
+    //}
   }
 }

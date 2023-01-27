@@ -101,6 +101,7 @@ export class UsersService {
       );
     } catch (e) {
       this.logger.error(e.stack);
+      return { message: e.message };
     }
   }
 
